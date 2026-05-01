@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Regina Mutton AND Fish</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Crimson+Text:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0b;
+      --cream: #f5ecd7;
+      --gold: #c8992a;
+      --red: #9b2226;
+      --teal: #1a6b6b;
+      --light: #e8dcc8;
+      --muted: #8a7f6e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 2rem;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(155,34,38,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 50%, rgba(26,107,107,0.2) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,153,42,0.12) 0%, transparent 60%);
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    .divider {
+      width: 60px; height: 2px;
+      background: var(--gold);
+      margin: 1.2rem auto;
+      position: relative;
+    }
+    .divider::before, .divider::after {
+      content: '✦';
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      color: var(--gold);
+      font-size: 0.6rem;
+    }
+    .divider::before { right: calc(100% + 6px); }
+    .divider::after  { left:  calc(100% + 6px); }
+
+    .tagline-top {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(3rem, 9vw, 7.5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-top: 0.6rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.4s;
+    }
+
+    h1 span.accent { color: var(--gold); font-style: italic; }
+
+    .hero-sub {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 0.8rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.6s;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.8s;
+    }
+
+    .badge {
+      border: 1px solid rgba(200,153,42,0.35);
+      padding: 0.5rem 1.2rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-radius: 2px;
+    }
+
+    /* ── SECTION SHARED ── */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+    }
+
+    /* ── SPLIT INTRO ── */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media(max-width:700px){ .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .intro-text p {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: var(--light);
+      margin-top: 1.5rem;
+    }
+
+    .intro-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .icon-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      padding: 2rem 1.2rem;
+      text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .icon-card:hover {
+      border-color: rgba(200,153,42,0.4);
+      background: rgba(200,153,42,0.04);
+    }
+    .icon-card .icon { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; }
+    .icon-card span { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── PRODUCTS ── */
+    .products-wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    .products-header { text-align: center; margin-bottom: 3.5rem; }
+
+    .tab-row {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 3rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      width: fit-content;
+      margin-inline: auto;
+    }
+
+    .tab {
+      padding: 0.75rem 2rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+    .tab.active, .tab:hover { background: var(--gold); color: var(--bg); }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: none;
+    }
+    .product-card.visible { display: block; }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    }
+
+    .card-img {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+
+    .card-img.meat-bg  { background: linear-gradient(135deg, rgba(155,34,38,0.3), rgba(80,10,10,0.5)); }
+    .card-img.fish-bg  { background: linear-gradient(135deg, rgba(26,107,107,0.3), rgba(10,60,80,0.5)); }
+
+    .card-body { padding: 1.3rem 1.5rem 1.8rem; }
+    .card-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+    .card-body p {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    .card-price {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    /* ── BANNER ── */
+    .banner {
+      background: var(--red);
+      padding: 5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.02) 0,
+        rgba(255,255,255,0.02) 1px,
+        transparent 1px,
+        transparent 28px
+      );
+    }
+    .banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      position: relative;
+    }
+    .banner p {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.75);
+      margin-top: 0.8rem;
+      position: relative;
+    }
+
+    /* ── WHY US ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .why-item { border-top: 1px solid rgba(200,153,42,0.3); padding-top: 1.5rem; }
+    .why-item .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--gold);
+      opacity: 0.4;
+    }
+    .why-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      margin: 0.5rem 0 0.5rem;
+    }
+    .why-item p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    footer .shop-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+    }
+    footer p { font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; letter-spacing: 0.08em; }
+    footer .contact-row { margin-top: 1.5rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+    footer .contact-row a { color: var(--light); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.1em; }
+    footer .contact-row a:hover { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- HERO -->
+<header>
+  <p class="tagline-top">Fresh · Premium · Trusted</p>
+  <h1>Regina<br><span class="accent">Mutton</span><br>&amp; Fish</h1>
+  <p class="hero-sub">Your neighbourhood's finest meat &amp; seafood</p>
+  <div class="divider"></div>
+  <div class="badge-row">
+    <div class="badge">🥩 Premium Mutton</div>
+    <div class="badge">🐟 Fresh Seafood</div>
+    <div class="badge">🐔 Country Chicken</div>
+    <div class="badge">🦐 Live Prawns</div>
+  </div>
+</header>
+
+<!-- INTRO -->
+<section>
+  <div class="intro-grid">
+    <div class="intro-text">
+      <p class="section-label">Our Story</p>
+      <h2 class="section-title">From the farm &amp; sea<br>to your plate</h2>
+      <p>At Regina Mutton AND Fish, we bring you the freshest cuts of mutton, chicken, and seafood — sourced daily, handled with care, and served with pride. Quality you can taste, freshness you can trust.</p>
+      <p>We cater to families, restaurants, and bulk buyers. Every piece is cleaned, dressed, and packed to your preference.</p>
+    </div>
+    <div class="intro-visual">
+      <div class="icon-card"><span class="icon">🐑</span><span>Mutton</span></div>
+      <div class="icon-card"><span class="icon">🐟</span><span>Fish</span></div>
+      <div class="icon-card"><span class="icon">🦐</span><span>Prawns</span></div>
+      <div class="icon-card"><span class="icon">🐔</span><span>Chicken</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<div class="products-wrap">
+  <div class="products-header">
+    <p class="section-label">What We Offer</p>
+    <h2 class="section-title">Our Products</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="tab-row">
+    <button class="tab active" onclick="filterProducts('all')">All</button>
+    <button class="tab" onclick="filterProducts('meat')">Meat</button>
+    <button class="tab" onclick="filterProducts('fish')">Fish &amp; Seafood</button>
+  </div>
+
+  <div class="products-grid" id="productGrid">
+
+    <!-- MEAT -->
+    <div class="product-card visible" data-cat="meat">
+      <div class="card-img meat-bg">🐑</div>
+      <div class="card-body">
+        <h3>Whole Mutton</h3>
+        <p>Full dressed mutton, farm-fresh and cleaned to order.</p>
+        <div class="card-price">Available Daily</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="meat">
+      <div class="card-img meat-bg">🥩</div>
+      <div class="card-body">
+        <h3>Mutton Curry Cut</h3>
+        <p>Bone-in curry pieces, perfect for biryani and gravies.</p>
+        <div class="card-price">Per Kg</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="meat">
+      <div class="card-img meat-bg">🍖</div>
+      <div class="card-body">
+        <h3>Mutton Keema</h3>
+        <p>Freshly minced mutton for kebabs, cutlets &amp; koftas.</p>
+        <div class="card-price">Per Kg</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="meat">
+      <div class="card-img meat-bg">🐔</div>
+      <div class="card-body">
+        <h3>Country Chicken</h3>
+        <p>Naatu kozhi — free-range, full-flavoured, freshly dressed.</p>
+        <div class="card-price">Live &amp; Dressed</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="meat">
+      <div class="card-img meat-bg">🫀</div>
+      <div class="card-body">
+        <h3>Organ Meat</h3>
+        <p>Liver, kidney, brain &amp; trotter — cleaned &amp; fresh.</p>
+        <div class="card-price">On Request</div>
+      </div>
+    </div>
+
+    <!-- FISH -->
+    <div class="product-card visible" data-cat="fish">
+      <div class="card-img fish-bg">🐟</div>
+      <div class="card-body">
+        <h3>Seer Fish (Vanjaram)</h3>
+        <p>King of Tamil fish — ideal for fry, gravy or marinade.</p>
+        <div class="card-price">Per Kg</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="fish">
+      <div class="card-img fish-bg">🐠</div>
+      <div class="card-body">
+        <h3>Red Snapper (Sankara)</h3>
+        <p>Mild, firm flesh — great for steaming or curry.</p>
+        <div class="card-price">Per Kg</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="fish">
+      <div class="card-img fish-bg">🦐</div>
+      <div class="card-body">
+        <h3>Fresh Prawns</h3>
+        <p>Tiger &amp; small prawns, cleaned &amp; deveined on request.</p>
+        <div class="card-price">Per Kg</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="fish">
+      <div class="card-img fish-bg">🦑</div>
+      <div class="card-body">
+        <h3>Squid &amp; Cuttlefish</h3>
+        <p>Tender squid rings and whole cuttlefish, cleaned fresh.</p>
+        <div class="card-price">Seasonal</div>
+      </div>
+    </div>
+
+    <div class="product-card visible" data-cat="fish">
+      <div class="card-img fish-bg">🐡</div>
+      <div class="card-body">
+        <h3>Rohu &amp; Katla</h3>
+        <p>Popular freshwater fish, whole or cut as preferred.</p>
+        <div class="card-price">Per Kg</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+  <h2>Custom Cuts, Bulk Orders Welcome</h2>
+  <p>We dress and portion your order exactly how you like it — just ask.</p>
+</div>
+
+<!-- WHY US -->
+<section>
+  <p class="section-label">Why Choose Us</p>
+  <h2 class="section-title">The Regina Difference</h2>
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="num">01</div>
+      <h4>Fresh Daily</h4>
+      <p>All our meat and seafood is sourced every morning — no frozen stock.</p>
+    </div>
+    <div class="why-item">
+      <div class="num">02</div>
+      <h4>Hygienic Handling</h4>
+      <p>Cleaned, cut and packed in a hygienic environment you can see.</p>
+    </div>
+    <div class="why-item">
+      <div class="num">03</div>
+      <h4>Fair Prices</h4>
+      <p>Honest pricing with no hidden charges — bulk discounts available.</p>
+    </div>
+    <div class="why-item">
+      <div class="num">04</div>
+      <h4>Custom Orders</h4>
+      <p>Tell us how you want it — marinated, minced, whole or sliced.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="shop-name">Regina Mutton AND Fish</div>
+  <p>Your trusted neighbourhood meat &amp; seafood shop</p>
+  <div class="contact-row">
+    <a href="tel:+918760371615">📞 Call Us</a>
+    <a href="#">📍 Find Us</a>
+    <a href="#">🕗 Open Daily</a>
+  </div>
+  <p style="margin-top:2rem; font-size:0.72rem; opacity:0.4;">© 2026 Regina Mutton AND Fish. All rights reserved.</p>
+</footer>
+
+<script>
+  function filterProducts(cat) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.add('visible');
+      } else {
+        card.classList.remove('visible');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
